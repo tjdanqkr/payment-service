@@ -1,6 +1,5 @@
 package com.example.pay.client.api;
 
-import com.example.pay.client.response.CustomerResponse;
 import com.example.pay.domain.dto.Customer;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
