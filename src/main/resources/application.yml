@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: pay-service
+    name: payment-service
   datasource:
     url: jdbc:mysql://localhost:3306/pay?serverTimezone=Asia/Seoul
     username: root
@@ -17,7 +17,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.0.184:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}

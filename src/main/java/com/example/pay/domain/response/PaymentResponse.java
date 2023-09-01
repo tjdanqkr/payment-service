@@ -14,6 +14,7 @@ public class PaymentResponse {
     private Long id;
     private LocalDateTime createAt;
     private Integer price;
+    private Long storeId;
     private List<Menu> menus;
     private Customer customer;
 
@@ -21,6 +22,7 @@ public class PaymentResponse {
         this.id = payment.getId();
         this.createAt = payment.getCreateAt();
         this.price = payment.getPrice();
+        this.storeId = payment.getStoreId();
         this.menus = menus;
         this.customer = customer;
     }

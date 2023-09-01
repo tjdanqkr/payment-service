@@ -15,6 +15,7 @@ public class Payment {
     private Long id;
     private LocalDateTime createAt;
     private Integer price;
+    private Long storeId;
     private String menuIds;
     private UUID customerId;
 }
