@@ -15,5 +15,4 @@ public class TokenInfo {
     private String name;
     private String number;
     private String role;
-
 }
