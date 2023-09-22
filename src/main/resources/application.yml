@@ -1,6 +1,6 @@
 
 server:
-  port: 0
+  port: 9007
 
 spring:
   application:
@@ -13,11 +13,16 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: localhost:9092
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-
+    enabled: false
   instance:
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}

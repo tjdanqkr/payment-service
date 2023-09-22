@@ -1,12 +1,10 @@
-package com.example.pay.client.request;
+package com.example.pay.domain.kafka;
 
 
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class OrderRequest {
+public class OrderKafkaData {
     private Long storeId;
     private String customerId;
     private Integer price;

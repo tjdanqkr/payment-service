@@ -3,13 +3,14 @@ package com.example.pay.service;
 import com.example.pay.client.api.CustomerClient;
 import com.example.pay.client.api.MenuClient;
 import com.example.pay.client.api.OrderCommandClient;
-import com.example.pay.client.request.OrderRequest;
+import com.example.pay.domain.kafka.OrderKafkaData;
 import com.example.pay.config.TokenInfo;
 import com.example.pay.domain.dto.Customer;
 import com.example.pay.domain.dto.Menu;
 import com.example.pay.domain.entity.Payment;
 import com.example.pay.domain.request.PaymentRequest;
 import com.example.pay.domain.response.PaymentResponse;
+import com.example.pay.kafka.OrderCommandProducer;
 import com.example.pay.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,17 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final CustomerClient customerClient;
     private final MenuClient menuClient;
-    private final OrderCommandClient orderCommandClient;
+    private final OrderCommandProducer orderCommandProducer;
+    //  등록하는 것
+    public void save(PaymentRequest request, TokenInfo tokenInfo){
+        Payment save = paymentRepository.save(request.toEntity(tokenInfo));
+        OrderKafkaData orderKafkaData = new OrderKafkaData();
+        orderKafkaData.setPrice(save.getPrice());
+        orderKafkaData.setStoreId(save.getStoreId());
+        orderKafkaData.setCustomerId(save.getCustomerId().toString());
+        orderCommandProducer.send(orderKafkaData);
+    }
+
 //  내꺼 보는거
 
     public List<PaymentResponse> getByCustomerId(TokenInfo info){
@@ -53,13 +64,5 @@ public class PaymentService {
             return new PaymentResponse(payment, menus, customer);
         }).toList();
     }
-    //  등록하는 것
-    public void save(PaymentRequest request, TokenInfo tokenInfo){
-        Payment save = paymentRepository.save(request.toEntity(tokenInfo));
-        OrderRequest orderRequest = new OrderRequest();
-        orderRequest.setPrice(save.getPrice());
-        orderRequest.setStoreId(save.getStoreId());
-        orderRequest.setCustomerId(save.getCustomerId().toString());
-        orderCommandClient.save(orderRequest);
-    }
+
 }
